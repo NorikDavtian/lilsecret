@@ -641,9 +641,18 @@ function screenTerms() {
       h('a', { href: 'https://norik.io/chat', rel: 'noreferrer noopener' }, 'norik.io/chat')));
 }
 
+// Static markup, never touched by user input.
+const FLAME_SVG =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>' +
+  '</svg>';
+
 function screenGone() {
   const g = GONE[S.gone] || GONE.missing;
+  const flame = h('div', { class: 'gone-flame' });
+  flame.innerHTML = FLAME_SVG;
   return h('div', { class: 'gone' },
+    flame,
     h('div', { class: 'gone-kicker', text: g[0] }),
     h('h2', { class: 'serif-h', text: g[1] }),
     h('p', { text: g[2] }),
