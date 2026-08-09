@@ -83,3 +83,10 @@ gh workflow run deploy.yml
 Either path builds a `linux/amd64` image tagged with the short git SHA,
 pushes it to your registry, ensures the namespace + secrets exist, applies
 `manifests/` with kustomize, and waits for the rollout.
+
+Not on DigitalOcean, or don't want any of this? The whole app is one
+Docker image with zero dependencies — just tell your LLM "deploy this
+Docker image to my infra" and let it adapt the manifests. The only things
+it needs to know: the container listens on 8080, wants a `STORAGE_KEY`
+secret (64 hex chars), and keeps its SQLite file in `/data` (mount a small
+volume there).
