@@ -81,6 +81,7 @@ button { font-family: var(--sans); }
 
 button { transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease, filter 0.15s ease; }
 button:focus-visible { outline: 2px solid rgba(202, 202, 203, 0.65); outline-offset: 2px; }
+.btn-bone, .btn-ghost, .btn-danger { white-space: nowrap; }
 
 .btn-bone {
   background: linear-gradient(180deg, #e6e6e7, #bdbdbf);
@@ -228,6 +229,14 @@ a.pill-btn:hover { color: var(--ink-2); }
 .compose-foot { display: flex; align-items: center; gap: 12px; margin-top: 22px; }
 .count-label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; color: var(--faint); }
 .spacer { flex: 1; }
+@media (max-width: 600px) {
+  /* Primary actions go full-width on phones; labels drop underneath. */
+  .compose-foot, .seal-foot { flex-direction: column-reverse; align-items: stretch; gap: 14px; }
+  .compose-foot .count-label { text-align: center; }
+  .handoff-actions { flex-direction: column; align-items: stretch; }
+  .handoff-actions .btn-ghost { text-align: center; }
+  .rv-burn .btn-danger { width: 100%; }
+}
 
 /* ---------- seal ---------- */
 
