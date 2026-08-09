@@ -636,7 +636,9 @@ function screenTerms() {
     item('No shady shit', 'Don’t use lilsecret for anything illegal or harmful — scams, threats, harassment, doxxing, malware, stolen data, or content that exploits anyone. Abusive traffic gets rate-limited or blocked.'),
     item('Nothing is recoverable', 'Drops self-destruct by design. There are no backups and no recovery — if a code is lost or a note burns, it’s gone. Don’t store the only copy of anything here.'),
     item('As-is, no promises', 'The service is provided as-is, without warranties of any kind. We can’t read your notes, so we can’t moderate them — you alone are responsible for what you share and with whom.'),
-    h('p', { class: 'how-foot', text: 'Questions, abuse reports, or security findings: hello@norik.io' }));
+    h('p', { class: 'how-foot' },
+      'Questions, abuse reports, or security findings: ',
+      h('a', { href: 'https://norik.io/chat', rel: 'noreferrer noopener' }, 'norik.io/chat')));
 }
 
 function screenGone() {
