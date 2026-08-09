@@ -311,31 +311,11 @@ button:focus-visible { outline: 2px solid rgba(202, 202, 203, 0.65); outline-off
 .rv-note { border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 12px; background: var(--card-bg); overflow: hidden; margin-bottom: 14px; }
 .rv-note-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
 .rv-note-title { font-size: 14px; font-weight: 600; color: var(--ink); flex: 1; min-width: 80px; }
-.rv-body { padding: 14px 16px; }
-.rv-raw { margin: 0; font-family: var(--mono); font-size: 12.5px; line-height: 19px; color: var(--ink-3); white-space: pre-wrap; word-break: break-word; }
+.rv-raw {
+  margin: 0; padding: 10px 14px 12px; min-width: 0; overflow-x: auto;
+  font-family: var(--mono); font-size: 12.5px; line-height: 19px; color: var(--ink-3); white-space: pre;
+}
 .rv-burn { text-align: center; margin-top: 30px; }
-
-/* rendered markdown */
-.md { min-width: 0; }
-.md p { margin: 0 0 10px; line-height: 1.6; font-size: 13.5px; color: var(--ink-4); }
-.md h1, .md h2, .md h3, .md h4 { margin: 14px 0 6px; font-weight: 700; color: var(--ink); font-family: var(--sans); }
-.md h1 { font-size: 18px; }
-.md h2 { font-size: 16px; }
-.md h3 { font-size: 14.5px; }
-.md h4 { font-size: 13.5px; }
-.md code { font-family: var(--mono); font-size: 12px; background: rgba(255, 255, 255, 0.07); padding: 1px 5px; border-radius: 4px; color: #dadadc; }
-.md pre {
-  background: rgba(10, 10, 11, 0.6); border: 1px solid var(--line-08); border-radius: 8px;
-  padding: 12px 14px; overflow: auto; font-family: var(--mono); font-size: 12px; line-height: 1.6;
-  color: #dadadc; margin: 0 0 10px;
-}
-.md ul { margin: 0 0 10px; padding-left: 20px; color: var(--ink-4); font-size: 13.5px; line-height: 1.6; }
-.md li { margin: 2px 0; }
-.md hr { border: none; border-top: 1px solid var(--line-12); margin: 12px 0; }
-.md blockquote {
-  border-left: 2px solid rgba(255, 255, 255, 0.2); margin: 0 0 10px; padding: 2px 0 2px 12px;
-  color: var(--body); font-size: 13.5px; line-height: 1.6;
-}
 
 /* ---------- gone ---------- */
 

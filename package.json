@@ -4,6 +4,8 @@
   "type": "module",
   "description": "Encrypted one-time secret sharing — say it once, then ash.",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test",
+    "test:coverage": "node --test --experimental-test-coverage"
   }
 }

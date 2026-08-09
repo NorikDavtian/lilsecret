@@ -423,5 +423,10 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`lilsecret listening on :${PORT} — data in ${DATA_DIR}`);
+  console.log(`lilsecret listening on :${server.address().port} — data in ${DATA_DIR}`);
 });
+
+// For the test suite: lets node:test import the running server in-process
+// (real coverage, no child processes), reset rate-limit state between
+// tests, and close the server when done.
+export { server, buckets };

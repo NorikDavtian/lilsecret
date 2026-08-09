@@ -30,8 +30,8 @@ TLS, and a small persistent volume for the (sealed) database.
 - Every stored record is sealed **again** server-side (AES-256-GCM with
   `STORAGE_KEY`) before touching SQLite, so a leaked volume snapshot reveals
   nothing — the key lives in a Kubernetes Secret, not on the volume.
-- Rendered markdown is escape-first: all user content is HTML-escaped before
-  any formatting is applied, so a note can never script the page.
+- Notes are plain text end to end — the app renders decrypted content only
+  via `textContent` (no HTML injection surface at all).
 
 ## Run locally
 

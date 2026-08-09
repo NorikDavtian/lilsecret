@@ -124,56 +124,6 @@ function policyShort(d) {
   return fuse + ' · shelf life ' + fmtSpan(d.unopenedMin * 60000);
 }
 
-/* ---------- markdown: escape-first, safe subset (ported) ---------- */
-
-function mdEsc(s) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-function mdInline(s) {
-  return s
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
-    .replace(/\*([^*]+)\*/g, '<i>$1</i>')
-    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer noopener">$1</a>');
-}
-function mdToHtml(src) {
-  const esc = mdEsc(src || '');
-  const fences = [];
-  const guarded = esc.replace(/```([\s\S]*?)```/g, (m2, code) => {
-    fences.push(code.replace(/^\n|\n$/g, ''));
-    return '\u0000' + (fences.length - 1) + '\u0000';
-  });
-  const lines = guarded.split('\n');
-  let html = '', inUl = false, para = [];
-  const flush = () => { if (para.length) { html += '<p>' + mdInline(para.join('<br>')) + '</p>'; para = []; } };
-  const closeUl = () => { if (inUl) { html += '</ul>'; inUl = false; } };
-  for (const l of lines) {
-    const t = l.trim();
-    if (!t) { flush(); closeUl(); continue; }
-    if (t.charCodeAt(0) === 0) {
-      flush(); closeUl();
-      const i = parseInt(t.slice(1), 10);
-      html += '<pre>' + (fences[i] || '') + '</pre>';
-      continue;
-    }
-    const hd = t.match(/^(#{1,4})\s+(.*)/);
-    if (hd) { flush(); closeUl(); const n = hd[1].length; html += `<h${n}>` + mdInline(hd[2]) + `</h${n}>`; continue; }
-    if (/^[-*]\s+/.test(t)) {
-      flush();
-      if (!inUl) { html += '<ul>'; inUl = true; }
-      html += '<li>' + mdInline(t.replace(/^[-*]\s+/, '')) + '</li>';
-      continue;
-    }
-    if (/^(---|\*\*\*)$/.test(t)) { flush(); closeUl(); html += '<hr>'; continue; }
-    if (t.indexOf('&gt;') === 0) { flush(); closeUl(); html += '<blockquote>' + mdInline(t.replace(/^&gt;\s?/, '')) + '</blockquote>'; continue; }
-    para.push(t);
-  }
-  flush(); closeUl();
-  const div = h('div', { class: 'md' });
-  div.innerHTML = html; // safe: every character of user input was escaped above
-  return div;
-}
-
 /* ---------- toast / copy ---------- */
 
 let toastTimer;
@@ -304,7 +254,7 @@ function screenCompose() {
     const ta = h('textarea', {
       class: 'note-ta', spellcheck: 'false',
       rows: String(Math.max(7, note.body.split('\n').length + 1)),
-      placeholder: 'The secret itself. Markdown works — # heading, **bold**, code fences.',
+      placeholder: 'The secret itself — every line stays exactly as typed.',
       oninput: (e) => {
         note.body = e.target.value;
         e.target.rows = Math.max(7, note.body.split('\n').length + 1);
@@ -336,7 +286,7 @@ function screenCompose() {
   return h('div', { class: 'wrap-880 screen' },
     h('div', { class: 'kicker', text: 'STEP 1 / 3 · DRAFT' }),
     h('h2', { class: 'serif-h h2-34', text: 'What goes in the drop?' }),
-    h('p', { class: 'step-sub', text: 'Plain text or markdown. Nothing below ever travels unsealed.' }),
+    h('p', { class: 'step-sub', text: 'Plain text, line by line. Nothing below ever travels unsealed.' }),
     list,
     h('button', {
       class: 'add-note',
@@ -549,7 +499,6 @@ async function unlock() {
         burnToken: data.burnToken,
         afterOpenMin: data.afterOpenMin,
         burnsAt: data.afterOpenMin > 0 ? Date.now() + data.afterOpenMin * 60000 : null,
-        raw: new Set(),
       };
       S.view = 'reveal';
       render();
@@ -627,19 +576,15 @@ function screenReveal() {
   const r = S.reveal;
   if (!r) { S.view = 'landing'; return screenLanding(); }
   const notesEls = r.notes.map((n, i) => {
-    const isRaw = r.raw.has(i);
+    const lines = (n.body || '').split('\n');
     return h('div', { class: 'rv-note' },
       h('div', { class: 'rv-note-head' },
         h('span', { class: 'note-num', text: String(i + 1).padStart(2, '0') }),
         h('span', { class: 'rv-note-title', text: n.title || 'untitled' }),
-        h('button', {
-          class: 'pill-btn',
-          onclick: () => { isRaw ? r.raw.delete(i) : r.raw.add(i); render(); },
-          text: isRaw ? 'RENDERED' : 'RAW',
-        }),
         h('button', { class: 'pill-btn', onclick: () => copyText(n.body, 'Note copied.'), text: 'COPY' })),
-      h('div', { class: 'rv-body' },
-        isRaw ? h('pre', { class: 'rv-raw', text: n.body }) : mdToHtml(n.body)));
+      h('div', { class: 'note-grid' },
+        h('div', { class: 'gutter' }, lines.map((_, j) => h('div', { text: String(j + 1) }))),
+        h('pre', { class: 'rv-raw', text: n.body })));
   });
   const remain = r.burnsAt ? r.burnsAt - Date.now() : 0;
   return h('div', { class: 'wrap-760 screen' },
@@ -681,6 +626,19 @@ const GONE = {
   missing: ['NO SUCH DROP', 'Nothing buried here.', 'This link doesn’t match any drop. It may have been scrubbed from existence — or it never existed at all.'],
 };
 
+function screenTerms() {
+  const item = (t, d) => h('div', { class: 'burn-panel' },
+    h('div', { class: 't', text: t }), h('div', { class: 'd', text: d }));
+  return h('div', { class: 'wrap-680 screen' },
+    h('div', { class: 'kicker', text: 'TERMS OF USE' }),
+    h('h2', { class: 'serif-h h2-34', text: 'Short version: be decent.' }),
+    h('p', { class: 'step-sub', text: 'lilsecret is a small free tool for sharing your own sensitive information with people you trust. Using it means you agree to this:' }),
+    item('No shady shit', 'Don’t use lilsecret for anything illegal or harmful — scams, threats, harassment, doxxing, malware, stolen data, or content that exploits anyone. Abusive traffic gets rate-limited or blocked.'),
+    item('Nothing is recoverable', 'Drops self-destruct by design. There are no backups and no recovery — if a code is lost or a note burns, it’s gone. Don’t store the only copy of anything here.'),
+    item('As-is, no promises', 'The service is provided as-is, without warranties of any kind. We can’t read your notes, so we can’t moderate them — you alone are responsible for what you share and with whom.'),
+    h('p', { class: 'how-foot', text: 'Questions, abuse reports, or security findings: hello@norik.io' }));
+}
+
 function screenGone() {
   const g = GONE[S.gone] || GONE.missing;
   return h('div', { class: 'gone' },
@@ -695,7 +653,7 @@ function screenGone() {
 const SCREENS = {
   landing: screenLanding, compose: screenCompose, seal: screenSeal,
   sealing: screenSealing, handoff: screenHandoff, gate: screenGate,
-  reveal: screenReveal, gone: screenGone,
+  reveal: screenReveal, gone: screenGone, terms: screenTerms,
 };
 
 function render() {
@@ -722,6 +680,7 @@ function route() {
   const hash = location.hash;
   if (hash === '#/new') S.view = 'compose';
   else if (hash === '#/seal') S.view = draftHasContent() ? 'seal' : 'compose';
+  else if (hash === '#/terms') S.view = 'terms';
   else S.view = 'landing';
   render();
 }
