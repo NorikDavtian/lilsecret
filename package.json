@@ -1,0 +1,9 @@
+{
+  "name": "lilsecret",
+  "private": true,
+  "type": "module",
+  "description": "Encrypted one-time secret sharing — say it once, then ash.",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

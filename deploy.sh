@@ -25,6 +25,13 @@ fi
 # Namespace must exist before the registry pull secret can land in it.
 # doctl names the secret registry-<registry-name>.
 kubectl apply -f manifests/namespace.yml
+
+# At-rest storage key: cut once, lives only as a Secret — never on the data
+# volume it protects, never in the repo.
+if ! kubectl get secret lilsecret-storage -n "$NAMESPACE" >/dev/null 2>&1; then
+  kubectl create secret generic lilsecret-storage -n "$NAMESPACE" \
+    --from-literal=STORAGE_KEY="$(openssl rand -hex 32)"
+fi
 doctl registry kubernetes-manifest --namespace "$NAMESPACE" | kubectl apply -f -
 kubectl patch serviceaccount default -n "$NAMESPACE" \
   -p "{\"imagePullSecrets\": [{\"name\": \"registry-${DO_REGISTRY##*/}\"}]}"

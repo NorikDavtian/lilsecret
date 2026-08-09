@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: lilsecret
 resources:
 - namespace.yml
+- pvc.yml
 - lilsecret.yml
 - ingress.yml
 - ssl.yml

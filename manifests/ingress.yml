@@ -6,6 +6,8 @@ metadata:
     cert-manager.io/issuer: letsencrypt-prod
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # Ciphertext posts are base64-inflated; the app caps bodies at 1 MiB.
+    nginx.ingress.kubernetes.io/proxy-body-size: "2m"
 spec:
   tls:
     - hosts:
