@@ -200,6 +200,8 @@ function startCanvas(c) {
 
 /* ---------- screens ---------- */
 
+const CLONE_CMD = 'git clone https://github.com/NorikDavtian/lilsecret.git';
+
 function screenLanding() {
   const canvas = h('canvas', { class: 'land-canvas' });
   requestAnimationFrame(() => startCanvas(canvas));
@@ -236,10 +238,14 @@ function screenLanding() {
           h('div', { class: 'how-row' },
             h('div', { class: 't', text: 'It really is gone' }),
             h('div', { class: 'd', text: 'One read, three wrong codes, or time running out — the notes are erased on the spot, not archived. All that remains is a marker that says how it burned.' }))),
-        h('p', { class: 'how-foot' },
-          'No accounts. No cookies. No trackers. ',
-          h('a', { href: 'https://github.com/NorikDavtian/lilsecret', target: '_blank', rel: 'noreferrer noopener' }, 'Open source'),
-          ' — the curious can read exactly how the sealing works. Be kind — please don’t abuse this app.'))));
+        h('p', { class: 'how-foot', text: 'No accounts. No cookies. No trackers. Be kind — please don’t abuse this app.' }),
+        h('div', { class: 'linkbox clone-cta' },
+          h('div', { class: 'label', text: 'OPEN SOURCE — RUN YOUR OWN' }),
+          h('div', { class: 'linkbox-row' },
+            h('div', { class: 'linkbox-val', text: CLONE_CMD }),
+            h('button', { class: 'pill-btn', onclick: () => copyText(CLONE_CMD, 'Command copied — go build.'), text: 'COPY' }),
+            h('a', { class: 'pill-btn', href: 'https://github.com/NorikDavtian/lilsecret', target: '_blank', rel: 'noreferrer noopener' }, 'GITHUB')),
+          h('div', { class: 'code-note', text: 'Zero dependencies. One Node server. The whole sealing story is readable in one sitting.' })))));
 }
 
 function screenCompose() {
