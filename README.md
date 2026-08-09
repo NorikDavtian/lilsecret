@@ -1,6 +1,6 @@
 # lilsecret
 
-🤫 say it once. then ash.
+🤫 burner notes — read once, then gone.
 
 Encrypted one-time note sharing. The sender seals notes in the browser and
 gets a single-use link plus a one-time code (or their own passphrase). The
@@ -23,7 +23,7 @@ TLS, and a small persistent volume for the (sealed) database.
   attempts without being able to decrypt anything. A database leak alone
   can't decrypt a drop — even by brute-forcing every 6-digit code — because
   the link-key half never reaches the server. The link alone faces the
-  3-attempt limit, then ash.
+  3-attempt limit, then the drop self-destructs.
 - On a successful unlock the payload leaves the server exactly once and is
   wiped immediately; what remains is a tombstone that only says *how* the
   drop ended (read, self-destructed, expired, burned by hand).

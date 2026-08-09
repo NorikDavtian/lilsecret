@@ -257,14 +257,14 @@ function screenLanding() {
   sub.append(
     'Share credentials, keys, and ',
     h('span', { class: 'redact', text: 'confessions' }),
-    ' as sealed drops — never in plaintext. The recipient gets one link and a one-time code. Wrong code three times, or one read, and it’s ash.'
+    ' as sealed drops — never in plaintext. The recipient gets one link and a one-time code. Wrong code three times, or one read, and it’s gone for good.'
   );
   const card = (n, t, d) => h('div', { class: 'land-card' },
     h('div', { class: 'n', text: n }), h('div', { class: 't', text: t }), h('div', { class: 'd', text: d }));
   return h('div', { class: 'land' },
     canvas,
     h('div', { class: 'land-inner' },
-      h('div', { class: 'kicker', text: 'ENCRYPTED NOTE SHARING · SELF-DESTRUCTS ON OPEN' }),
+      h('div', { class: 'kicker', text: 'ENCRYPTED BURNER NOTES · SELF-DESTRUCTS ON OPEN' }),
       h('h1', { text: 'Some things should only be read once.' }),
       sub,
       h('div', { class: 'land-cta' },
@@ -272,7 +272,7 @@ function screenLanding() {
       h('div', { class: 'land-cards' },
         card('01 · SEAL', 'Sealed on your device', 'Notes are encrypted in your browser before anything leaves it. The server only ever holds scrambled bytes.'),
         card('02 · RELAY', 'Two channels, two halves', 'The link is half the key. The code is the other half. Send them separately — no one in the middle ever holds both.'),
-        card('03 · BURN', 'Ash by design', 'Three wrong codes, an expired shelf life, or a single read — the drop erases itself for good. Erased, not archived.')),
+        card('03 · BURN', 'Gone by design', 'Three wrong codes, an expired shelf life, or a single read — the drop erases itself for good. Erased, not archived.')),
       h('div', { class: 'how' },
         h('div', { class: 'kicker', text: 'HOW IT WORKS' }),
         h('h2', { class: 'serif-h', text: 'Built to forget.' }),
@@ -287,9 +287,9 @@ function screenLanding() {
             h('div', { class: 't', text: 'It really is gone' }),
             h('div', { class: 'd', text: 'One read, three wrong codes, or time running out — the notes are erased on the spot, not archived. All that remains is a marker that says how it burned.' }))),
         h('p', { class: 'how-foot' },
-          'No accounts. No analytics. ',
+          'No accounts. No cookies. No trackers. ',
           h('a', { href: 'https://github.com/NorikDavtian/lilsecret', target: '_blank', rel: 'noreferrer noopener' }, 'Open source'),
-          ' — the curious can read exactly how the sealing works.'))));
+          ' — the curious can read exactly how the sealing works. Be kind — please don’t abuse this app.'))));
 }
 
 function screenCompose() {
@@ -394,7 +394,7 @@ function screenSeal() {
     h('div', { class: 'label', style: 'margin:28px 0 10px', text: 'DESTRUCTION — BOTH TIMERS ALWAYS RUN' }),
     h('div', { class: 'burn-panel' },
       h('div', { class: 't', text: 'Burn after reading' }),
-      h('div', { class: 'd', text: "How long they can read once it's open. Immediately means one sitting — leave, and it's ash." }),
+      h('div', { class: 'd', text: "How long they can read once it's open. Immediately means one sitting — leave, and it's gone." }),
       chips([[0, 'IMMEDIATELY'], [1, '1 MIN'], [5, '5 MIN'], [10, '10 MIN'], [15, '15 MIN'], [30, '30 MIN']], 'afterOpenMin')),
     h('div', { class: 'burn-panel' },
       h('div', { class: 't', text: 'Expire if unopened' }),
@@ -672,8 +672,8 @@ setInterval(() => {
 }, 1000);
 
 const GONE = {
-  tries: ['SELF-DESTRUCT COMPLETE', 'Too many wrong codes. Ash.', 'The notes shredded themselves after 3 failed attempts. Nothing can bring them back. If this wasn’t you — someone else has your link.'],
-  timer: ['THE WINDOW CLOSED', 'Time’s up. The pages are ash.', 'The reading window ran out and the drop burned itself, exactly as instructed.'],
+  tries: ['SELF-DESTRUCT COMPLETE', 'Too many wrong codes. It’s gone.', 'The notes shredded themselves after 3 failed attempts. Nothing can bring them back. If this wasn’t you — someone else has your link.'],
+  timer: ['THE WINDOW CLOSED', 'Time’s up. The notes are gone.', 'The reading window ran out and the drop erased itself, exactly as instructed.'],
   manual: ['BURNED BY HAND', 'Read once, burned once.', 'This drop was destroyed after reading. Exactly as designed.'],
   used: ['LINK ALREADY USED', 'This drop was already opened.', 'Links die after one use. If that wasn’t you, tell the sender — fast.'],
   unopened: ['EXPIRED UNREAD', 'It shredded itself, unopened.', 'The shelf life ran out before anyone opened this drop.'],
