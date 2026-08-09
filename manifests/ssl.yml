@@ -1,0 +1,17 @@
+# cert-manager Issuers are namespaced, so this namespace carries its own.
+# Forks: change the email below to your own contact address.
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-prod
+  namespace: lilsecret
+spec:
+  acme:
+    email: hello@norik.io
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-prod-private-key
+    solvers:
+      - http01:
+          ingress:
+            class: nginx
