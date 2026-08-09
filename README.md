@@ -1,5 +1,8 @@
 # lilsecret
 
+<img width="816" height="691" alt="image" src="https://github.com/user-attachments/assets/30d32437-8590-4524-8d31-fcc06e89b278" />
+
+
 🤫 burner notes — read once, then gone.
 
 Encrypted one-time note sharing. The sender seals notes in the browser and
@@ -13,6 +16,10 @@ cluster: own namespace, kustomize manifests, nginx-ingress, cert-manager
 TLS, and a small persistent volume for the (sealed) database.
 
 ## How the sealing works
+<img width="810" height="660" alt="image" src="https://github.com/user-attachments/assets/eca78866-39bb-4f16-8483-a50beb0a4822" />
+<img width="811" height="767" alt="image" src="https://github.com/user-attachments/assets/37971611-610c-4783-a212-11c470d4cf7b" />
+<img width="806" height="682" alt="image" src="https://github.com/user-attachments/assets/e5ee6b04-3342-4508-8697-c61095f37b1d" />
+
 
 - Notes are encrypted **on the sender's device** with AES-256-GCM. The key
   is derived (PBKDF2-SHA256 · 310k iterations, then HKDF) from **two**
