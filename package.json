@@ -2,6 +2,7 @@
   "name": "lilsecret",
   "private": true,
   "type": "module",
+  "license": "MIT",
   "description": "Encrypted one-time secret sharing — say it once, then ash.",
   "scripts": {
     "start": "node server.js",
