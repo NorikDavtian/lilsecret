@@ -385,11 +385,13 @@ const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
 
   res.setHeader('x-content-type-options', 'nosniff');
-  res.setHeader('x-frame-options', 'DENY');
   res.setHeader('referrer-policy', 'no-referrer');
+  // frame-ancestors: norik.io may embed the app (live previews in posts);
+  // everyone else is refused. This replaces X-Frame-Options, whose only
+  // modes are all-or-nothing.
   res.setHeader(
     'content-security-policy',
-    "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+    "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'self' https://norik.io https://*.norik.io"
   );
 
   if (url.pathname.startsWith('/api/')) {
