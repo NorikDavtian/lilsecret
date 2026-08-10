@@ -217,7 +217,12 @@ test('index, gate paths, healthz, and 404s', async () => {
   assert.equal(home.status, 200);
   assert.match(home.headers.get('content-type'), /text\/html/);
   assert.ok(home.headers.get('content-security-policy').includes("default-src 'none'"));
-  assert.equal(home.headers.get('x-frame-options'), 'DENY');
+  assert.equal(home.headers.get('x-frame-options'), null);
+  assert.ok(
+    home.headers
+      .get('content-security-policy')
+      .includes("frame-ancestors 'self' https://norik.io https://*.norik.io")
+  );
   assert.equal(home.headers.get('referrer-policy'), 'no-referrer');
 
   const gate = await fetch(BASE + '/d/abcdefgh2345');
